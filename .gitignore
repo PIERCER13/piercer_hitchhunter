@@ -1,0 +1,7 @@
+# dados gerados em runtime (incidentes, estado, relatorios exportados, profiler)
+data/*
+!data/.gitkeep
+
+# material de divulgacao gerado (os scripts em promo/ ficam; a saida nao)
+promo/dist/
+promo/out/

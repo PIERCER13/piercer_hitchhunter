@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>piercer_hitchhunter</title>
+<style>
+:root{--bg:#09090B;--surface:#151419;--elev:#25212B;--accent:#8B5CF6;--text:#ECECF1;--muted:#8E8A99;--warn:#F59E0B;--bad:#EF4444;--ok:#22C55E}
+*{box-sizing:border-box}
+html,body{margin:0;background:transparent;color:var(--text);font:12px/1.35 system-ui,-apple-system,"Segoe UI",sans-serif}
+#app{width:min(820px,92vw);max-height:78vh;margin:8vh auto;overflow:auto;background:var(--bg);border:1px solid var(--elev);border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+.hidden{display:none!important}
+header{display:flex;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px solid var(--elev);position:sticky;top:0;background:var(--bg);z-index:2;flex-wrap:wrap}
+.logo{font-weight:800;letter-spacing:-.06em;font-size:15px}
+.logo span{color:var(--accent)}
+.sp{flex:1}
+button{background:var(--surface);color:var(--text);border:1px solid var(--elev);border-radius:5px;padding:4px 9px;font:inherit;font-size:11px;cursor:pointer}
+button:hover{border-color:var(--accent)}
+button:disabled{opacity:.5;cursor:default}
+button.primary{background:var(--accent);border-color:var(--accent)}
+button.danger:hover{border-color:var(--bad);color:var(--bad)}
+button.mini{padding:0 6px;font-size:10px;border-radius:4px}
+.lang{display:inline-flex;background:var(--surface);border:1px solid var(--elev);border-radius:6px;padding:2px;gap:2px}
+.lang button{border:0;background:transparent;color:var(--muted);padding:2px 7px;font-size:10px;letter-spacing:.06em;border-radius:4px}
+.lang button.active{background:#2a2142;color:#cdb8ff}
+main{padding:10px 12px 18px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:6px;margin-bottom:8px}
+.card{background:var(--surface);border:1px solid var(--elev);border-radius:6px;padding:7px 9px}
+.card .k{color:var(--muted);font-size:9.5px;text-transform:uppercase;letter-spacing:.06em}
+.card .v{font-size:15px;font-weight:700;overflow-wrap:anywhere}
+h2{font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:10px 0 5px}
+.panel{background:var(--surface);border:1px solid var(--elev);border-radius:6px}
+.rank{display:flex;align-items:center;gap:8px;padding:4px 9px;border-bottom:1px solid var(--elev)}
+.rank:last-child{border-bottom:0}
+.bar{height:4px;background:var(--accent);border-radius:3px}
+.inc{border-bottom:1px solid var(--elev)}
+.inc:last-child{border-bottom:0}
+.inc.resolved .row{opacity:.5}
+.row{display:grid;grid-template-columns:128px 62px 56px 1fr 44px;gap:8px;align-items:center;padding:5px 9px;cursor:pointer}
+.row:hover{background:#1b1921}
+.tag{display:inline-block;padding:0 6px;border-radius:99px;font-size:10px;background:var(--elev)}
+.tag.net{background:#3b2a6b;color:#cdb8ff}
+.tag.crash{background:#5b1d1d;color:#ffb4b4}
+.tag.ok{background:#14351f;color:#9be3b3}
+.note{margin:6px 0 0;color:var(--warn)}
+.ms.warn{color:var(--warn)}.ms.bad{color:var(--bad)}
+.detail{display:none;padding:0 9px 9px;background:#0f0e12}
+.inc.open .detail{display:block}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sus-item{margin:4px 0}
+.sus-head{display:flex;align-items:center;gap:6px}
+.muted{color:var(--muted)}
+.mono{font-family:ui-monospace,Consolas,monospace;font-size:11px}
+ul{margin:2px 0 0;padding-left:15px}
+.empty{padding:14px;text-align:center;color:var(--muted)}
+textarea{width:100%;background:var(--bg);color:var(--text);border:1px solid var(--elev);border-radius:5px;padding:5px;font:inherit;resize:vertical;min-height:34px}
+.actions{display:flex;gap:6px;margin-top:6px;align-items:center}
+.chips{display:flex;flex-wrap:wrap;gap:5px;padding:6px 9px}
+.chip{background:var(--elev);border-radius:99px;padding:1px 4px 1px 8px;font-size:10.5px;display:inline-flex;gap:4px;align-items:center}
+.chip button{border:0;background:transparent;padding:0 3px;color:var(--muted)}
+#toast{padding:4px 12px;font-size:11px;color:var(--muted);min-height:20px;border-bottom:1px solid var(--elev)}
+#toast.bad{color:var(--bad)}#toast.ok{color:var(--ok)}
+/* modo web (start.bat): pagina cheia */
+body.web{background:var(--bg)}
+body.web #app{width:min(1000px,96vw);max-height:none;margin:12px auto;box-shadow:none}
+body.web #close{display:none}
+</style>
+</head>
+<body>
+<div id="app" class="hidden">
+<header>
+  <div class="logo">piercer<span>_</span>hitchhunter</div>
+  <div class="sp"></div>
+  <span class="muted" id="upd"></span>
+  <div class="lang" title="Idioma / Language">
+    <button id="lPT" data-lang="pt-BR">PT-BR</button>
+    <button id="lEN" data-lang="en-US">EN-US</button>
+  </div>
+  <button id="snap" data-i="snap"></button>
+  <button id="prof" data-i="prof"></button>
+  <button id="exp"></button>
+  <button id="clr" class="danger" data-i="clr"></button>
+  <button id="close" class="primary" data-i="close"></button>
+</header>
+<div id="toast"></div>
+<main>
+  <div class="cards" id="cards"></div>
+  <h2 data-i="h_rank"></h2>
+  <div class="panel" id="rank"></div>
+  <div id="ignoredBox"></div>
+  <h2 data-i="h_inc"></h2>
+  <div class="panel" id="list"></div>
+</main>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+const INGAME=typeof GetParentResourceName==='function';
+const RES=INGAME?GetParentResourceName():'piercer_hitchhunter';
+let isOpen=false,settings={ignored:[],allowRestart:false},ign=new Set(),last=null;
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+
+/* ================= i18n (PT-BR / EN-US) ================= */
+const I18N={
+'pt-BR':{
+  snap:'Snapshot',prof:'Gravar profiler',exp:'Exportar',expWeb:'Baixar JSON',clr:'Limpar',clrConfirm:'Confirmar limpeza?',close:'Fechar (Esc)',
+  c_server:'Servidor',c_inc:'Incidentes 24h',c_max:'Maior hitch 24h',c_top:'Suspeito nº 1',c_players:'Jogadores',c_prof:'Profiler',
+  v_online:'online',v_closed:'encerrado',v_nodata:'sem dados',v_nosignal:'sem sinal há {t}',v_idle:'livre',v_rec:'gravando…',
+  h_rank:'Suspeitos mais frequentes (24h)',h_ign:'Ignorados nos suspeitos',h_inc:'Incidentes',h_sus:'Suspeitos',h_ctx:'Contexto',h_prof:'Profiler',h_q:'Queries lentas',h_ev:'Resources start/stop',h_note:'Anotação',
+  none24:'Nenhum incidente nas últimas 24h.',nohitch:'Nenhum hitch registrado.',nosus:'Sem suspeito claro (ou todos ignorados).',noprof:'Sem gravação de profiler neste incidente.',profErr:'Profiler',
+  none_f:'Nenhuma.',none_m:'Nenhum.',players:'Jogadores',peds:'peds',vehicles:'veículos',objects:'objetos',before:'{s}s antes',
+  updated:'atualizado {t}',errorp:'erro: {e}',ignore:'ignorar',ignoreTip:'não mostrar este resource como suspeito',restart:'reiniciar',restartTip:'dá restart no resource',confirm:'confirmar?',unignoreTip:'voltar aos suspeitos',
+  notePh:'Anotação (ex.: causa encontrada, resource corrigido)…',saveNote:'Salvar nota',resolve:'Marcar resolvido',reopen:'Reabrir',tagResolved:'resolvido',crash:'queda?',running:'Executando {a}…',dlOk:'relatório baixado',
+  keyPrompt:'Chave das ações (mostrada na janela do start.bat):',
+  src_heuristica:'heurística',src_profiler:'profiler','src_profiler+heuristica':'profiler+heurística',
+  e_ent_growth:'+{a} entidades na janela (agora {b})',e_ent_total:'{a} entidades criadas por ele',e_queries:'{a} queries lentas (máx {b}ms)',e_res_action:'{s} há {a}s',e_prof_cpu:'profiler: {a}ms de CPU (mais pesado: {s})',
+  n_crash_note:'Encerramento não limpo: o servidor pode ter caído. Os suspeitos vêm do último estado gravado antes do sinal parar.',
+  m_profiler_busy:'Profiler ocupado.',m_profile_started:'Gravando profiler (~15s); o resultado entra no último incidente.',m_profile_started_noinc:'Gravando profiler, mas não há incidente para anexar o resultado.',
+  m_cleared:'Incidentes apagados.',m_no_data:'Sem dados.',m_snapshot:'{players} jogadores | peds {peds}, veículos {vehicles}, objetos {objects} | top: {top}',
+  m_export_failed:'Falha ao salvar.',m_exported:'Salvo em {file}',m_invalid_resource:'Resource inválido.',m_ignored:'{resource} ignorado nos suspeitos.',m_unignored:'{resource} voltou aos suspeitos.',
+  m_incident_not_found:'Incidente não encontrado.',m_note_saved:'Anotação salva.',m_resolved:'Marcado como resolvido.',m_reopened:'Reaberto.',
+  m_restart_disabled:'Desativado: ligue Config.Actions.restartResource em config.lua.',m_protected:'Resource protegido.',m_resource_missing:'Resource não existe.',m_restart_sent:'restart {resource} enviado.',
+  m_unknown_action:'Ação desconhecida.',m_error:'Erro: {detail}',m_expired:'Expirado (o comando ficou mais de 60s na fila).',
+  m_noresp:'Sem resposta: o resource está rodando? (a fila expira em 60s)',m_blocked:'Bloqueado: {e}',m_http:'Erro {e}',m_done:'feito',m_failed:'falhou'
+},
+'en-US':{
+  snap:'Snapshot',prof:'Record profiler',exp:'Export',expWeb:'Download JSON',clr:'Clear',clrConfirm:'Confirm clear?',close:'Close (Esc)',
+  c_server:'Server',c_inc:'Incidents 24h',c_max:'Worst hitch 24h',c_top:'Top suspect',c_players:'Players',c_prof:'Profiler',
+  v_online:'online',v_closed:'stopped',v_nodata:'no data',v_nosignal:'no signal for {t}',v_idle:'idle',v_rec:'recording…',
+  h_rank:'Most frequent suspects (24h)',h_ign:'Ignored suspects',h_inc:'Incidents',h_sus:'Suspects',h_ctx:'Context',h_prof:'Profiler',h_q:'Slow queries',h_ev:'Resource start/stop',h_note:'Note',
+  none24:'No incidents in the last 24h.',nohitch:'No hitches recorded.',nosus:'No clear suspect (or all ignored).',noprof:'No profiler recording for this incident.',profErr:'Profiler',
+  none_f:'None.',none_m:'None.',players:'Players',peds:'peds',vehicles:'vehicles',objects:'objects',before:'{s}s before',
+  updated:'updated {t}',errorp:'error: {e}',ignore:'ignore',ignoreTip:'stop listing this resource as a suspect',restart:'restart',restartTip:'restarts the resource',confirm:'confirm?',unignoreTip:'back to suspects',
+  notePh:'Note (e.g. cause found, resource fixed)…',saveNote:'Save note',resolve:'Mark resolved',reopen:'Reopen',tagResolved:'resolved',crash:'crash?',running:'Running {a}…',dlOk:'report downloaded',
+  keyPrompt:'Actions key (shown in the start.bat window):',
+  src_heuristica:'heuristic',src_profiler:'profiler','src_profiler+heuristica':'profiler+heuristic',
+  e_ent_growth:'+{a} entities in the window (now {b})',e_ent_total:'{a} entities created by it',e_queries:'{a} slow queries (max {b}ms)',e_res_action:'{s} {a}s ago',e_prof_cpu:'profiler: {a}ms of CPU (heaviest: {s})',
+  n_crash_note:'Unclean shutdown: the server may have crashed. Suspects come from the last state saved before the signal stopped.',
+  m_profiler_busy:'Profiler busy.',m_profile_started:'Recording profiler (~15s); the result goes into the latest incident.',m_profile_started_noinc:'Recording profiler, but there is no incident to attach the result to.',
+  m_cleared:'Incidents cleared.',m_no_data:'No data.',m_snapshot:'{players} players | peds {peds}, vehicles {vehicles}, objects {objects} | top: {top}',
+  m_export_failed:'Failed to save.',m_exported:'Saved to {file}',m_invalid_resource:'Invalid resource.',m_ignored:'{resource} is now ignored as a suspect.',m_unignored:'{resource} is back in the suspects.',
+  m_incident_not_found:'Incident not found.',m_note_saved:'Note saved.',m_resolved:'Marked as resolved.',m_reopened:'Reopened.',
+  m_restart_disabled:'Disabled: enable Config.Actions.restartResource in config.lua.',m_protected:'Protected resource.',m_resource_missing:'Resource does not exist.',m_restart_sent:'restart {resource} sent.',
+  m_unknown_action:'Unknown action.',m_error:'Error: {detail}',m_expired:'Expired (the command sat in the queue for over 60s).',
+  m_noresp:'No response: is the resource running? (the queue expires in 60s)',m_blocked:'Blocked: {e}',m_http:'Error {e}',m_done:'done',m_failed:'failed'
+}};
+function detectLang(){
+  try{const s=localStorage.getItem('piercer_hitchhunter_lang');if(s&&I18N[s])return s}catch(e){}
+  return (navigator.language||'').toLowerCase().startsWith('pt')?'pt-BR':'en-US';
+}
+let lang=detectLang();
+const has=k=>k in I18N[lang]||k in I18N['pt-BR'];
+function T(k,d){
+  let s=I18N[lang][k]??I18N['pt-BR'][k]??k;
+  return d?s.replace(/\{(\w+)\}/g,(_,n)=>d[n]??''):s;
+}
+const msgText=r=>{const k='m_'+r.msg;return has(k)?T(k,r.data||{}):(r.msg||T(r.ok?'m_done':'m_failed'))};
+const evText=e=>typeof e==='string'?e:(has('e_'+e.k)?T('e_'+e.k,e):JSON.stringify(e));
+function applyStatic(){
+  document.documentElement.lang=lang;
+  document.querySelectorAll('[data-i]').forEach(e=>{e.textContent=T(e.dataset.i)});
+  $('#exp').dataset.i=INGAME?'exp':'expWeb';$('#exp').textContent=T($('#exp').dataset.i);
+  $('#lPT').classList.toggle('active',lang==='pt-BR');$('#lEN').classList.toggle('active',lang==='en-US');
+}
+function setLang(l){
+  if(!I18N[l])return;lang=l;
+  try{localStorage.setItem('piercer_hitchhunter_lang',l)}catch(e){}
+  applyStatic();if(last)paint(last,true);
+}
+
+function el(tag,attrs,...kids){
+  const e=document.createElement(tag);
+  for(const k in(attrs||{})){
+    if(k==='class')e.className=attrs[k];
+    else if(k==='on')for(const ev in attrs.on)e.addEventListener(ev,attrs.on[ev]);
+    else if(k==='value')e.value=attrs[k];
+    else e.setAttribute(k,attrs[k]);
+  }
+  for(const c of kids.flat())if(c!=null&&c!==false)e.append(c.nodeType?c:document.createTextNode(String(c)));
+  return e;
+}
+
+/* ================= transporte ================= */
+// No jogo: callback da NUI (cliente -> servidor -> cliente), com permissao checada no servidor.
+async function api(path,method='GET',args){
+  const r=await fetch(`https://${RES}/rpc`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path:'/api'+path,method,args})});
+  const j=await r.json();
+  if(j.__status!==undefined&&j.__status!==200)throw new Error(j.data&&j.data.error||('http '+j.__status));
+  return j.data;
+}
+// No web: POST /action grava na fila; o resource executa e devolve o resultado em results.json.
+async function webAct(action,args){
+  const headers={'Content-Type':'application/json','X-Hitch':'1'};
+  const key=sessionStorage.getItem('hh_key');if(key)headers['X-Hitch-Key']=key;
+  const r=await fetch('action',{method:'POST',headers,body:JSON.stringify({action,args})});
+  if(r.status===403){
+    const j=await r.json().catch(()=>({}));
+    if(j.error==='chave invalida'){
+      const k=prompt(T('keyPrompt'));
+      if(k){sessionStorage.setItem('hh_key',k.trim());return webAct(action,args)}
+    }
+    return {ok:false,msg:'blocked',data:{e:j.error||'403'}};
+  }
+  if(!r.ok)return {ok:false,msg:'http',data:{e:r.status}};
+  const {id}=await r.json();
+  for(let i=0;i<30;i++){
+    await sleep(600);
+    try{const res=await (await fetch('results.json',{cache:'no-store'})).json();if(res[id])return res[id]}catch(e){}
+  }
+  return {ok:false,msg:'noresp'};
+}
+const act=(action,args={})=>INGAME?api('/action','POST',{action,args}):webAct(action,args);
+
+/* ================= dados ================= */
+function computeSummary(list){
+  const now=Date.now()/1000,agg={};let day=0,max=0;
+  for(const i of list)if(now-i.at<=86400){
+    day++;max=Math.max(max,i.maxMs);
+    const s=(i.suspects||[]).find(x=>!ign.has(x.resource));if(s)agg[s.resource]=(agg[s.resource]||0)+1;
+  }
+  const ranking=Object.entries(agg).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([resource,incidents])=>({resource,incidents}));
+  return {incidents24h:day,maxMs24h:max,ranking,players:list[0]?list[0].players:'—',profilerBusy:false};
+}
+async function loadData(){
+  if(INGAME){
+    const [s,list,set]=await Promise.all([api('/summary'),api('/incidents'),api('/settings')]);
+    return {s,list,set,st:null};
+  }
+  const get=async(f,d)=>{try{return await (await fetch(f,{cache:'no-store'})).json()}catch(e){return d}};
+  const [raw,st,set]=await Promise.all([get('incidents.json',[]),get('state.json',{}),get('settings.json',{})]);
+  ign=new Set(set.ignored||[]); // o resumo ja precisa respeitar os ignorados
+  const list=raw.slice().reverse(); // arquivo vem do mais antigo p/ o mais novo
+  return {s:computeSummary(list),list,set,st};
+}
+const dur=s=>s<90?Math.round(s)+'s':s<5400?Math.round(s/60)+' min':(s/3600).toFixed(1)+' h';
+function serverCard(st){
+  if(!st||!st.t)return [T('c_server'),T('v_nodata'),''];
+  const age=Date.now()/1000-st.t;
+  if(st.clean)return [T('c_server'),T('v_closed'),''];
+  if(age<45)return [T('c_server'),T('v_online'),''];
+  return [T('c_server'),T('v_nosignal',{t:dur(age)}),'bad'];
+}
+const fmtTime=t=>new Date(t*1000).toLocaleString(lang);
+const msClass=ms=>ms>=500?'bad':ms>=250?'warn':'';
+
+/* ================= acoes ================= */
+function toast(msg,kind){const t=$('#toast');t.textContent=msg||'';t.className=kind||'';clearTimeout(toast._t);if(msg)toast._t=setTimeout(()=>{t.textContent='';t.className=''},6000)}
+async function run(btn,action,args){
+  const label=btn?btn.textContent:null;
+  if(btn){btn.disabled=true;btn.textContent='…'}
+  toast(T('running',{a:action}));
+  try{
+    const r=await act(action,args);
+    toast((r.ok?'✓ ':'✗ ')+msgText(r),r.ok?'ok':'bad');
+  }catch(e){toast('✗ '+e.message,'bad')}
+  if(btn){btn.disabled=false;btn.textContent=label}
+  refresh(true);
+}
+// botoes destrutivos pedem um segundo clique (alert/confirm nao funcionam bem na NUI do FiveM)
+function confirmClick(btn,confirmKey,fn){
+  let armed=false,t;
+  btn.addEventListener('click',e=>{
+    e.stopPropagation();
+    if(!armed){armed=true;btn.textContent=T(confirmKey);t=setTimeout(()=>{armed=false;btn.textContent=T(btn.dataset.i)},3000);return}
+    clearTimeout(t);armed=false;btn.textContent=T(btn.dataset.i);fn(btn);
+  });
+}
+
+/* ================= render ================= */
+function renderCards(s,st){
+  const items=[[T('c_inc'),s.incidents24h],[T('c_max'),s.maxMs24h+' ms'],
+    [T('c_top'),s.ranking[0]?s.ranking[0].resource:'—'],[T('c_players'),s.players],
+    [T('c_prof'),s.profilerBusy?T('v_rec'):T('v_idle')]];
+  if(!INGAME)items.unshift(serverCard(st));
+  $('#cards').replaceChildren(...items.map(([k,v,c])=>el('div',{class:'card'},el('div',{class:'k'},k),el('div',{class:'v',style:c==='bad'?'color:var(--bad)':''},v))));
+  const max=Math.max(1,...s.ranking.map(r=>r.incidents));
+  $('#rank').replaceChildren(...(s.ranking.length?s.ranking.map(r=>
+    el('div',{class:'rank'},el('span',{style:'width:190px;word-break:break-all'},r.resource),
+      el('div',{style:'flex:1'},el('div',{class:'bar',style:'width:'+(r.incidents/max*100)+'%'})),
+      el('span',{class:'muted'},r.incidents+'x'))):[el('div',{class:'empty'},T('none24'))]));
+  const chips=[...ign].map(n=>el('span',{class:'chip'},n,el('button',{title:T('unignoreTip'),on:{click:()=>run(null,'unignore',{resource:n})}},'✕')));
+  $('#ignoredBox').replaceChildren(...(chips.length?[el('h2',{},T('h_ign')),el('div',{class:'panel chips'},chips)]:[]));
+}
+
+function renderIncident(i){
+  const vis=(i.suspects||[]).filter(s=>!ign.has(s.resource));
+  const top=vis[0];
+  const maxScore=Math.max(1,...vis.map(s=>s.score));
+  const sus=vis.slice(0,6).map(s=>{
+    const srcKey='src_'+s.source;
+    const head=el('div',{class:'sus-head'},el('b',{},s.resource),el('span',{class:'muted',style:'flex:1;text-align:right'},s.score+' · '+(has(srcKey)?T(srcKey):s.source)));
+    const ig=el('button',{class:'mini',title:T('ignoreTip')},T('ignore'));
+    ig.addEventListener('click',()=>run(ig,'ignore',{resource:s.resource}));
+    head.append(ig);
+    if(settings.allowRestart){
+      const rs=el('button',{class:'mini danger',title:T('restartTip'),'data-i':'restart'},T('restart'));
+      confirmClick(rs,'confirm',b=>run(b,'restart_resource',{resource:s.resource}));
+      head.append(rs);
+    }
+    return el('div',{class:'sus-item'},head,
+      el('div',{class:'bar',style:'width:'+(s.score/maxScore*100)+'%;margin:3px 0'}),
+      el('ul',{class:'muted'},(s.evidence||[]).map(e=>el('li',{},evText(e)))));
+  });
+  const ent=i.entities?`${T('peds')} ${i.entities.peds} · ${T('vehicles')} ${i.entities.vehicles} · ${T('objects')} ${i.entities.objects}`:'—';
+  const prof=i.profiler?(i.profiler.top?el('ul',{class:'mono'},i.profiler.top.slice(0,8).map(p=>el('li',{},p.resource+' — '+p.ms+' ms ('+p.heaviest+')'))):el('div',{class:'muted'},T('profErr')+': '+i.profiler.error)):el('div',{class:'muted'},T('noprof'));
+  const q=(i.slowQueries||[]).length?el('ul',{class:'mono'},i.slowQueries.slice(-8).map(x=>el('li',{},x.resource+' · '+x.ms+' ms'))):el('div',{class:'muted'},T('none_f'));
+  const ev=(i.resourceEvents||[]).length?el('ul',{class:'mono'},i.resourceEvents.slice(-8).map(x=>el('li',{},x.action+' '+x.resource+' ('+T('before',{s:Math.max(0,i.at-x.t)})+')'))):el('div',{class:'muted'},T('none_m'));
+
+  const ta=el('textarea',{maxlength:'200',placeholder:T('notePh'),value:i.userNote||''});
+  const save=el('button',{},T('saveNote'));
+  save.addEventListener('click',()=>run(save,'note',{id:i.id,text:ta.value}));
+  const res=el('button',{class:i.resolved?'':'primary'},i.resolved?T('reopen'):T('resolve'));
+  res.addEventListener('click',()=>run(res,'resolve',{id:i.id}));
+
+  const noteTxt=i.note?(has('n_'+i.note)?T('n_'+i.note):i.note):null; // chave nova ou texto antigo
+  const d=el('div',{class:'detail'},
+    noteTxt?el('div',{class:'note'},noteTxt):null,
+    el('div',{class:'grid2'},
+      el('div',{},el('h2',{},T('h_sus')),sus.length?sus:el('div',{class:'muted'},T('nosus'))),
+      el('div',{},el('h2',{},T('h_ctx')),el('div',{class:'muted'},T('players')+': '+i.players+' · '+ent),
+        el('h2',{},T('h_prof')),prof,el('h2',{},T('h_q')),q,el('h2',{},T('h_ev')),ev)),
+    el('h2',{},T('h_note')),ta,el('div',{class:'actions'},save,res));
+
+  const wrap=el('div',{class:'inc'+(i.resolved?' resolved':''),'data-id':i.id});
+  const row=el('div',{class:'row',on:{click:()=>wrap.classList.toggle('open')}},
+    el('span',{class:'muted'},fmtTime(i.at)),
+    el('span',{class:'tag '+(i.kind==='network'?'net':i.kind==='crash'?'crash':'')},i.kind==='crash'?T('crash'):i.kind),
+    el('span',{class:'ms '+msClass(i.maxMs)},i.kind==='crash'?'—':i.maxMs+' ms'),
+    el('span',{},top?top.resource+' ':'—',top?el('span',{class:'muted'},'('+top.score+')'):null,
+      i.resolved?el('span',{class:'tag ok',style:'margin-left:6px'},T('tagResolved')):null,
+      i.userNote?el('span',{class:'muted',style:'margin-left:6px'},'✎'):null),
+    el('span',{class:'muted'},'×'+i.count));
+  wrap.append(row,d);
+  return wrap;
+}
+
+function paint(data,force){
+  last=data;
+  const {s,list,set,st}=data;
+  settings=set||settings;ign=new Set(settings.ignored||[]);
+  renderCards(s,st);
+  // nao reconstrói a lista enquanto a pessoa digita uma anotacao
+  const a=document.activeElement;
+  if(force||!(a&&a.tagName==='TEXTAREA'&&$('#list').contains(a))){
+    const open=new Set([...document.querySelectorAll('.inc.open')].map(e=>e.dataset.id));
+    $('#list').replaceChildren(...(list.length?list.map(i=>{const e=renderIncident(i);if(open.has(i.id))e.classList.add('open');return e}):[el('div',{class:'empty'},T('nohitch'))]));
+  }
+  $('#upd').textContent=T('updated',{t:new Date().toLocaleTimeString(lang)});
+}
+
+let busy=false;
+async function refresh(force){
+  if(busy)return;busy=true;
+  try{paint(await loadData(),force)}
+  catch(e){$('#upd').textContent=T('errorp',{e:e.message})}
+  busy=false;
+}
+
+/* ================= barra de topo ================= */
+$('#snap').onclick=e=>run(e.currentTarget,'snapshot');
+$('#prof').onclick=e=>run(e.currentTarget,'profile');
+confirmClick($('#clr'),'clrConfirm',b=>run(b,'clear'));
+$('#exp').onclick=async e=>{
+  if(INGAME)return run(e.currentTarget,'export');
+  // web: baixa direto no navegador, sem passar pelo servidor
+  const raw=await (await fetch('incidents.json',{cache:'no-store'})).text();
+  const a=el('a',{href:URL.createObjectURL(new Blob([raw],{type:'application/json'})),download:'hitch-report.json'});
+  a.click();URL.revokeObjectURL(a.href);toast('✓ '+T('dlOk'),'ok');
+};
+$('#lPT').onclick=()=>setLang('pt-BR');
+$('#lEN').onclick=()=>setLang('en-US');
+
+function closeUI(){
+  isOpen=false;$('#app').classList.add('hidden');
+  fetch(`https://${RES}/close`,{method:'POST',body:'{}'});
+}
+$('#close').onclick=closeUI;
+window.addEventListener('message',e=>{
+  if(e.data.action==='open'){isOpen=true;$('#app').classList.remove('hidden');refresh(true)}
+  else if(e.data.action==='close'){isOpen=false;$('#app').classList.add('hidden')}
+});
+applyStatic();
+if(INGAME){
+  window.addEventListener('keydown',e=>{if(e.key==='Escape'&&isOpen)closeUI()});
+}else{
+  document.body.classList.add('web');
+  $('#app').classList.remove('hidden');
+  isOpen=true;refresh(true);
+}
+setInterval(()=>{if(isOpen)refresh()},INGAME?10000:5000);
+</script>
+</body>
+</html>
