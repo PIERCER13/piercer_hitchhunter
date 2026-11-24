@@ -1,6 +1,5 @@
 Utils = {}
 
--- Texto do servidor (notificacoes/Discord) conforme Config.Language. A NUI tem seu proprio seletor.
 function Utils.L(pt, en)
     return (Config.Language == 'en-US') and en or pt
 end
@@ -14,7 +13,6 @@ function Utils.iso(ts)
 end
 
 function Utils.log(msg)
-    -- prefixo fixo, e o listener ignora linhas com esse prefixo
     print(('^5[hitchhunter]^7 %s'):format(msg))
 end
 
