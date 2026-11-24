@@ -47,6 +47,6 @@ Config.Profiler = {
 Config.Discord = {
     enabled = false,
     webhook = '',
-    cooldown = 300,           -- segundos entre alertas
+    cooldown = 300,
     minHitchMs = 300,
 }
