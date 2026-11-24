@@ -1,4 +1,3 @@
--- Permissao e notificacao via framezero_bridge (vRP, QBCore, Qbox, ESX, OxCore, TNet, Standalone...).
 Auth = {}
 
 local function lower(s) return tostring(s):lower() end
@@ -19,17 +18,14 @@ function Auth.isAllowed(src)
 
     local p = Config.Permissions
 
-    -- 1) permissao/grupo/job do framework, resolvido pela bridge
     if listHas(p.bridge, function(perm) return framezero.HasPermission(src, perm) end) then
         return true
     end
 
-    -- 2) ACE nativo
     if listHas(p.ace, function(ace) return IsPlayerAceAllowed(src, ace) end) then
         return true
     end
 
-    -- 3) identificadores fixos (license:, steam:, discord:...)
     if type(p.identifiers) == 'table' and #p.identifiers > 0 then
         for _, id in ipairs(GetPlayerIdentifiers(src)) do
             for _, allowed in ipairs(p.identifiers) do
