@@ -241,8 +241,6 @@ local function handleHitch(h)
     end
 end
 
--- Se a execucao anterior nao terminou de forma limpa, registra uma "possivel queda"
--- com os suspeitos calculados a partir do ultimo estado gravado.
 local function recoverCrash()
     if not Config.CrashDetection then return end
     local raw = LoadResourceFile(RES, STATE_FILE)
@@ -296,9 +294,6 @@ CreateThread(function()
     end
 end)
 
----------------------------------------------------------------------
--- Comandos de console
----------------------------------------------------------------------
 RegisterCommand('hitch_profile', function(src)
     if src ~= 0 then return end
     local last = Storage.incidents[#Storage.incidents]
