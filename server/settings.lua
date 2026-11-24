@@ -1,5 +1,3 @@
--- Preferencias persistidas em data/settings.json (lista de resources ignorados).
--- O arquivo tambem e lido pelo painel web, por isso publica `allowRestart`.
 Settings = {}
 
 local RES = GetCurrentResourceName()
