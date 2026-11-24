@@ -1,10 +1,3 @@
--- Acoes remotas. Duas entradas, mesma whitelist:
---   1) NUI in-game  -> Actions.run (apos checar permissao em Auth)
---   2) Painel web   -> fila data/commands.json (o painel escreve, este resource le a cada ~2s)
--- Nada aqui executa texto livre: so as acoes de `handlers`, com argumentos validados.
---
--- Cada handler devolve (ok, chave, dados). A chave e traduzida pela NUI (PT-BR / EN-US),
--- por isso nao ha texto em idioma nenhum aqui.
 Actions = {}
 
 local RES = GetCurrentResourceName()
