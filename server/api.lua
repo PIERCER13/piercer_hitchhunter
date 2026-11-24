@@ -1,5 +1,3 @@
--- Leituras e acoes usadas pela NUI in-game (ingame.lua). Nao ha servidor HTTP: o painel web
--- (tools/start.bat) le os arquivos de data/ e envia acoes pela fila em commands.json.
 Api = {}
 
 local function topSuspect(inc)
@@ -31,7 +29,6 @@ local function summary()
     }
 end
 
--- Retorna (httpCode, tabela). `limit` opcional; `args` = { action=, args= } para /api/action.
 function Api.handle(path, method, limit, args)
     if path == '/api/summary' and method == 'GET' then
         return 200, summary()
