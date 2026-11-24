@@ -1,10 +1,7 @@
 Config = {}
 
--- Idioma das mensagens do servidor (notificacoes e Discord): 'pt-BR' ou 'en-US'.
--- A NUI tem seletor proprio (PT-BR / EN-US) e lembra a escolha de cada pessoa.
 Config.Language = 'pt-BR'
 
--- Comando in-game: /hitchhunter. Quem pode usar (qualquer uma das regras libera):
 Config.Permissions = {
     -- Grupos/permissoes/jobs da sua base, resolvidos pelo framezero_bridge
     -- (vRP: permissao; QBCore/Qbox: grupo; ESX: grupo; ACE/standalone: ver abaixo).
