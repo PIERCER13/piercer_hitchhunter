@@ -3,12 +3,8 @@ game 'gta5'
 lua54 'yes'
 
 name 'piercer_hitchhunter'
-description 'Detecta e atribui "network thread hitch warning" a resources suspeitos, com NUI in-game e painel web'
 author 'piercer'
-version '1.1.0'
 
--- Obrigatorio: a bridge resolve permissoes e notificacoes em qualquer base.
--- No server.cfg: ensure framezero_bridge  (antes deste resource)
 dependency 'framezero_bridge'
 
 ui_page 'web/index.html'
