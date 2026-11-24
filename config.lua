@@ -4,9 +4,7 @@ Config.Language = 'pt-BR'
 
 Config.Permissions = {
     bridge = { 'admin', 'Admin', 'admin.acess', 'superadmin', 'owner' },
-    -- ACE nativo. No server.cfg: add_ace group.admin piercer_hitchhunter.use allow
     ace = { 'piercer_hitchhunter.use' },
-    -- Identificadores fixos, ex.: 'license:abc123', 'discord:123'
     identifiers = {},
 }
 Config.IngameIncidentLimit = 60
