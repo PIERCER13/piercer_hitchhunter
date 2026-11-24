@@ -138,7 +138,6 @@ local function buildSuspects(now)
         add(r, math.min(40, a.n * 4 + a.max / 20), { k = 'queries', a = a.n, b = math.floor(a.max) })
     end
 
-    -- 3) Resources iniciados/parados na janela (start/stop pesado causa hitch)
     for _, e in ipairs(Hunter.resEvents) do
         if now - e.t <= 30 then
             add(e.resource, 25, { k = 'res_action', s = e.action, a = now - e.t })
@@ -153,7 +152,6 @@ local function buildSuspects(now)
     return out
 end
 
--- Mescla resultado do profiler (mais confiavel) no incidente
 function applyProfile(incident, top, err)
     if not top then
         incident.profiler = { error = err or 'sem dados' }
