@@ -35,12 +35,10 @@ Config.ContextSeconds = 120
 
 Config.Profiler = {
     enabled = true,
-    -- Ao detectar hitch, grava N frames do profiler nativo e le o resultado.
     frames = 300,
-    cooldown = 120,           -- segundos entre gravacoes automaticas
-    -- Caminho relativo a pasta do servidor. VALIDAR no seu servidor.
+    cooldown = 120,
     outputFile = 'cache/piercer_hitchhunter_profile.json',
-    waitSeconds = 12,         -- espera a gravacao terminar antes de ler
+    waitSeconds = 12,
     maxEvents = 200000,
 }
 
