@@ -208,7 +208,6 @@ async function webAct(action,args){
 }
 const act=(action,args={})=>INGAME?api('/action','POST',{action,args}):webAct(action,args);
 
-/* ================= dados ================= */
 function computeSummary(list){
   const now=Date.now()/1000,agg={};let day=0,max=0;
   for(const i of list)if(now-i.at<=86400){
@@ -225,8 +224,8 @@ async function loadData(){
   }
   const get=async(f,d)=>{try{return await (await fetch(f,{cache:'no-store'})).json()}catch(e){return d}};
   const [raw,st,set]=await Promise.all([get('incidents.json',[]),get('state.json',{}),get('settings.json',{})]);
-  ign=new Set(set.ignored||[]); // o resumo ja precisa respeitar os ignorados
-  const list=raw.slice().reverse(); // arquivo vem do mais antigo p/ o mais novo
+  ign=new Set(set.ignored||[]);
+  const list=raw.slice().reverse();
   return {s:computeSummary(list),list,set,st};
 }
 const dur=s=>s<90?Math.round(s)+'s':s<5400?Math.round(s/60)+' min':(s/3600).toFixed(1)+' h';
