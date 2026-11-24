@@ -36,7 +36,6 @@ function Read-Shared([string]$path, [string]$empty = '[]') {
 function Write-Atomic([string]$path, [string]$text) {
     $tmp = "$path.tmp"
     [IO.File]::WriteAllText($tmp, $text, $utf8)
-    # [NullString]::Value: no PowerShell 5.1 um $null comum vira "" e File.Replace rejeita o backup vazio
     if ([IO.File]::Exists($path)) { [IO.File]::Replace($tmp, $path, [NullString]::Value) } else { [IO.File]::Move($tmp, $path) }
 }
 
