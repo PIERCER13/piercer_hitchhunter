@@ -109,7 +109,6 @@ local function buildSuspects(now)
         evidence[resource][#evidence[resource] + 1] = text
     end
 
-    -- 1) Entidades: tamanho atual e crescimento vs. amostra mais antiga da janela
     local last = Hunter.samples[#Hunter.samples]
     local first
     for _, s in ipairs(Hunter.samples) do
@@ -120,7 +119,6 @@ local function buildSuspects(now)
             local before = (first and first.byScript[script]) or 0
             local growth = n - before
             if growth >= 20 then
-                -- evidencias sao estruturadas ({k=chave, a=, b=, s=}); a NUI traduz (PT-BR / EN-US)
                 add(script, math.min(40, growth / 5), { k = 'ent_growth', a = growth, b = n })
             elseif n >= 150 then
                 add(script, math.min(15, n / 50), { k = 'ent_total', a = n })
@@ -128,7 +126,6 @@ local function buildSuspects(now)
         end
     end
 
-    -- 2) Queries lentas recentes
     local qAgg = {}
     for _, q in ipairs(Hunter.slowQueries) do
         if now - q.t <= Config.ContextSeconds then
