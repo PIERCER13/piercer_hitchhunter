@@ -21,7 +21,6 @@ RegisterNUICallback('close', function(_, cb)
     cb({})
 end)
 
--- A NUI pede dados; repassamos ao servidor e devolvemos a resposta.
 RegisterNUICallback('rpc', function(data, cb)
     counter = counter + 1
     pending[counter] = cb
