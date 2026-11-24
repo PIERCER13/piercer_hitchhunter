@@ -24,10 +24,9 @@ if ($Bind -ne 'localhost') {
     $ActionKey = -join ((48..57) + (97..122) | Get-Random -Count 20 | ForEach-Object { [char]$_ })
 }
 
-$utf8 = New-Object Text.UTF8Encoding($false)   # sem BOM: o json.decode do FiveM nao aceita BOM
+$utf8 = New-Object Text.UTF8Encoding($false)
 
 function Read-Shared([string]$path, [string]$empty = '[]') {
-    # abre com compartilhamento para ler mesmo enquanto o FiveM grava o arquivo
     if (-not [IO.File]::Exists($path)) { return $empty }
     $fs = [IO.File]::Open($path, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::ReadWrite)
     try { return (New-Object IO.StreamReader($fs, $utf8)).ReadToEnd() }
