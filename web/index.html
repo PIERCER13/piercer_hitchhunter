@@ -185,7 +185,7 @@ async function api(path,method='GET',args){
   if(j.__status!==undefined&&j.__status!==200)throw new Error(j.data&&j.data.error||('http '+j.__status));
   return j.data;
 }
-// No web: POST /action grava na fila; o resource executa e devolve o resultado em results.json.
+
 async function webAct(action,args){
   const headers={'Content-Type':'application/json','X-Hitch':'1'};
   const key=sessionStorage.getItem('hh_key');if(key)headers['X-Hitch-Key']=key;
