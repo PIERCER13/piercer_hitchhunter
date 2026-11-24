@@ -13,9 +13,6 @@ local function push(list, item, max)
     if #list > max then table.remove(list, 1) end
 end
 
----------------------------------------------------------------------
--- Amostragem periodica: entidades por resource criador
----------------------------------------------------------------------
 local function sample()
     local byScript, total = {}, { peds = 0, vehicles = 0, objects = 0 }
     local budget = Config.MaxEntitiesPerSample
@@ -42,10 +39,6 @@ local function sample()
     }, Config.SampleHistory)
 end
 
----------------------------------------------------------------------
--- Estado persistido (sobrevive a queda do servidor)
--- Gravado a cada amostra; `clean = true` so e gravado em encerramento normal.
----------------------------------------------------------------------
 local STATE_FILE = 'data/last_state.json'
 
 local function writeState(clean)
