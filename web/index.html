@@ -100,7 +100,6 @@ const RES=INGAME?GetParentResourceName():'piercer_hitchhunter';
 let isOpen=false,settings={ignored:[],allowRestart:false},ign=new Set(),last=null;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
-/* ================= i18n (PT-BR / EN-US) ================= */
 const I18N={
 'pt-BR':{
   snap:'Snapshot',prof:'Gravar profiler',exp:'Exportar',expWeb:'Baixar JSON',clr:'Limpar',clrConfirm:'Confirmar limpeza?',close:'Fechar (Esc)',
@@ -180,8 +179,6 @@ function el(tag,attrs,...kids){
   return e;
 }
 
-/* ================= transporte ================= */
-// No jogo: callback da NUI (cliente -> servidor -> cliente), com permissao checada no servidor.
 async function api(path,method='GET',args){
   const r=await fetch(`https://${RES}/rpc`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({path:'/api'+path,method,args})});
   const j=await r.json();
