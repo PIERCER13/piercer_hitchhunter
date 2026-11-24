@@ -1,9 +1,6 @@
 param(
     [int]$Port = 8787,
-    # 'localhost' = so esta maquina (padrao, seguro). '+' = rede inteira (exige PowerShell como Administrador;
-    # nesse caso as ACOES passam a exigir uma chave aleatoria mostrada abaixo).
     [string]$Bind = 'localhost',
-    # Opcional: aponte para uma copia de incidents.json (ex.: baixada de uma host).
     [string]$DataFile = '',
     [switch]$Open
 )
