@@ -15,10 +15,10 @@ $SettingsFile = [IO.Path]::Combine($DataDir, 'settings.json')
 $ResultsFile  = [IO.Path]::Combine($DataDir, 'results.json')
 $CommandsFile = [IO.Path]::Combine($DataDir, 'commands.json')
 
-# Mesma whitelist do resource (server/commands.lua). O resource valida de novo.
+
 $AllowedActions = @('profile', 'clear', 'snapshot', 'export', 'ignore', 'unignore', 'note', 'resolve', 'restart_resource')
 
-# Chave so existe quando o painel e exposto na rede
+
 $ActionKey = ''
 if ($Bind -ne 'localhost') {
     $ActionKey = -join ((48..57) + (97..122) | Get-Random -Count 20 | ForEach-Object { [char]$_ })
