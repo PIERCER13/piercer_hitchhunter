@@ -24,13 +24,9 @@ Config.MergeWindow = 10
 
 -- Maximo de incidentes guardados em data/incidents.json.
 Config.MaxIncidents = 200
-
--- Amostragem periodica (entidades por resource criador, jogadores).
-Config.SampleInterval = 10   -- segundos
-Config.SampleHistory = 30    -- amostras mantidas (~5 min)
-Config.MaxEntitiesPerSample = 4000 -- teto para nao pesar com muitos peds/veiculos
-
--- Janela de contexto anexada a cada incidente.
+Config.SampleInterval = 10
+Config.SampleHistory = 30
+Config.MaxEntitiesPerSample = 4000
 Config.ContextSeconds = 120
 
 Config.Profiler = {
