@@ -86,14 +86,10 @@ function Queue-Command($req) {
     $now = [DateTimeOffset]::UtcNow.ToUnixTimeSeconds()
     $id = [guid]::NewGuid().ToString('N')
     $existing = @()
-    # No PS 5.1, ConvertFrom-Json emite o array inteiro como UM objeto: nem `| ConvertFrom-Json` nem
-    # `@(...)` o desembrulham. So a atribuicao direta mantem os elementos, entao normalizo depois.
     try {
         $parsed = ConvertFrom-Json (Read-Shared $CommandsFile '[]')
         if ($parsed -is [array]) { $existing = $parsed } elseif ($null -ne $parsed) { $existing = ,$parsed }
     } catch { }
-    # Serializa comando a comando e monta o array na mao: no PowerShell 5.1, regravar um array lido
-    # de JSON embrulha tudo em {"value":[...],"Count":n} e corrompe a fila.
     $items = New-Object System.Collections.Generic.List[string]
     foreach ($c in $existing) {
         if ($c.id -is [string] -and $c.at -and ($now - [long]$c.at) -le 120) {   # descarta comandos antigos
