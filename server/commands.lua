@@ -89,7 +89,6 @@ handlers.restart_resource = function(args)
     return true, 'restart_sent', { resource = name }
 end
 
--- Retorna (ok, chave, dados)
 function Actions.run(action, args)
     local fn = type(action) == 'string' and handlers[action]
     if not fn then return false, 'unknown_action' end
@@ -99,9 +98,6 @@ function Actions.run(action, args)
     return a == true, b, c
 end
 
----------------------------------------------------------------------
--- Fila de comandos do painel web (arquivos)
----------------------------------------------------------------------
 local CMD_FILE, RES_FILE = 'data/commands.json', 'data/results.json'
 local seen, results, order = {}, {}, {}
 
