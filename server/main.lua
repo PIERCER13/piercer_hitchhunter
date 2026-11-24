@@ -182,9 +182,6 @@ function applyProfile(incident, top, err)
     Storage.save()
 end
 
----------------------------------------------------------------------
--- Criacao de incidentes
----------------------------------------------------------------------
 local function notifyDiscord(incident)
     local d = Config.Discord
     if not d.enabled or d.webhook == '' then return end
