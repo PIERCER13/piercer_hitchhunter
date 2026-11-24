@@ -53,9 +53,8 @@ function Send-Json($ctx, [int]$code, $obj) {
     Send $ctx $code (ConvertTo-Json -InputObject $obj -Depth 6 -Compress) 'application/json; charset=utf-8'
 }
 
-# Defesa contra CSRF / DNS rebinding: so aceita acoes vindas da propria pagina do painel
 function Test-ActionRequest($req) {
-    if ($req.Headers['X-Hitch'] -ne '1') { return 'cabecalho X-Hitch ausente' }   # forca preflight CORS (nunca respondido)
+    if ($req.Headers['X-Hitch'] -ne '1') { return 'cabecalho X-Hitch ausente' }
     if ($Bind -eq 'localhost') {
         $h = ($req.Headers['Host'] -split ':')[0]
         if ($h -notin @('localhost', '127.0.0.1')) { return 'host invalido' }
