@@ -261,7 +261,6 @@ function confirmClick(btn,confirmKey,fn){
   });
 }
 
-/* ================= render ================= */
 function renderCards(s,st){
   const items=[[T('c_inc'),s.incidents24h],[T('c_max'),s.maxMs24h+' ms'],
     [T('c_top'),s.ranking[0]?s.ranking[0].resource:'—'],[T('c_players'),s.players],
@@ -334,7 +333,6 @@ function paint(data,force){
   const {s,list,set,st}=data;
   settings=set||settings;ign=new Set(settings.ignored||[]);
   renderCards(s,st);
-  // nao reconstrói a lista enquanto a pessoa digita uma anotacao
   const a=document.activeElement;
   if(force||!(a&&a.tagName==='TEXTAREA'&&$('#list').contains(a))){
     const open=new Set([...document.querySelectorAll('.inc.open')].map(e=>e.dataset.id));
@@ -351,13 +349,11 @@ async function refresh(force){
   busy=false;
 }
 
-/* ================= barra de topo ================= */
 $('#snap').onclick=e=>run(e.currentTarget,'snapshot');
 $('#prof').onclick=e=>run(e.currentTarget,'profile');
 confirmClick($('#clr'),'clrConfirm',b=>run(b,'clear'));
 $('#exp').onclick=async e=>{
   if(INGAME)return run(e.currentTarget,'export');
-  // web: baixa direto no navegador, sem passar pelo servidor
   const raw=await (await fetch('incidents.json',{cache:'no-store'})).text();
   const a=el('a',{href:URL.createObjectURL(new Blob([raw],{type:'application/json'})),download:'hitch-report.json'});
   a.click();URL.revokeObjectURL(a.href);toast('✓ '+T('dlOk'),'ok');
