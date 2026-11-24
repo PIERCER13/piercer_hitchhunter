@@ -124,12 +124,11 @@ if ($Open) { Start-Process $url }
 try {
     while ($listener.IsListening) {
         $task = $listener.GetContextAsync()
-        while (-not $task.AsyncWaitHandle.WaitOne(500)) { }   # mantem o Ctrl+C responsivo
+        while (-not $task.AsyncWaitHandle.WaitOne(500)) { }
         $ctx = $task.GetAwaiter().GetResult()
         try {
             $method = $ctx.Request.HttpMethod
             $path = $ctx.Request.Url.AbsolutePath
-            # rotas fixas: nada de caminho vindo do cliente chega ao disco
             if ($method -eq 'GET') {
                 switch ($path) {
                     '/'               { Send $ctx 200 ([IO.File]::ReadAllText($indexFile)) 'text/html; charset=utf-8' }
