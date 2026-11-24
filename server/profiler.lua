@@ -1,9 +1,3 @@
--- Integracao com o `profiler` nativo do FiveM.
--- ATENCAO: sintaxe dos comandos e formato do JSON devem ser validados no seu servidor.
---   profiler record <frames>   |   profiler saveJSON <arquivo>
--- O parser abaixo e tolerante: soma "dur" dos eventos e atribui ao resource
--- cujo nome aparecer no nome/args do evento.
-
 Profiler = { busy = false, lastRun = 0 }
 
 local function parseTrace(path)
@@ -58,7 +52,6 @@ local function parseTrace(path)
     return top
 end
 
--- Roda em thread propria. onDone(top|nil, err|nil)
 function Profiler.run(onDone)
     if Profiler.busy then return false, 'profiler ocupado' end
     Profiler.busy = true
