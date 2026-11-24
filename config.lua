@@ -17,12 +17,8 @@ Config.Actions = {
 }
 
 Config.CrashDetection = true
-
 Config.MinHitchMs = 100
-
 Config.MergeWindow = 10
-
--- Maximo de incidentes guardados em data/incidents.json.
 Config.MaxIncidents = 200
 Config.SampleInterval = 10
 Config.SampleHistory = 30
