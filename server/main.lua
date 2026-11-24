@@ -51,7 +51,6 @@ local function writeState(clean)
     SaveResourceFile(RES, STATE_FILE, json.encode(st), -1)
 end
 
--- Amostra sob demanda (acao "snapshot")
 function Hunter.snapshot()
     sample()
     pcall(writeState, false)
@@ -68,7 +67,6 @@ CreateThread(function()
     end
 end)
 
--- Encerramento limpo: resource parado ou desligamento/reinicio agendado do txAdmin
 AddEventHandler('onResourceStop', function(name)
     if name == RES then pcall(writeState, true) end
 end)
@@ -77,9 +75,6 @@ AddEventHandler('txAdmin:events:scheduledRestart', function(data)
     if type(data) == 'table' and (tonumber(data.secondsRemaining) or 99) <= 1 then pcall(writeState, true) end
 end)
 
----------------------------------------------------------------------
--- Listener de console: hitch + queries lentas
----------------------------------------------------------------------
 RegisterConsoleListener(function(channel, message)
     local line = Utils.stripColors(message)
     if line == '' or line:find('[hitchhunter]', 1, true) then return end
