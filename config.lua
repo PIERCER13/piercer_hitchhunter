@@ -18,10 +18,8 @@ Config.Actions = {
 
 Config.CrashDetection = true
 
--- Hitches abaixo disso (ms) sao ignorados.
 Config.MinHitchMs = 100
 
--- Hitches dentro dessa janela (segundos) viram o mesmo incidente.
 Config.MergeWindow = 10
 
 -- Maximo de incidentes guardados em data/incidents.json.
