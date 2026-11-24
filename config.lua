@@ -13,7 +13,6 @@ Config.Actions = {
     pollMs = 2000,
     commandTtl = 60,
     restartResource = false,
-    -- Nunca podem ser reiniciados pelo painel (o proprio hitchhunter ja e protegido).
     protected = { 'framezero_bridge', 'oxmysql', 'monitor', 'sessionmanager', 'mapmanager', 'spawnmanager', 'chat' },
 }
 
