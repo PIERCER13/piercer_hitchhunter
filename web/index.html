@@ -239,7 +239,6 @@ function serverCard(st){
 const fmtTime=t=>new Date(t*1000).toLocaleString(lang);
 const msClass=ms=>ms>=500?'bad':ms>=250?'warn':'';
 
-/* ================= acoes ================= */
 function toast(msg,kind){const t=$('#toast');t.textContent=msg||'';t.className=kind||'';clearTimeout(toast._t);if(msg)toast._t=setTimeout(()=>{t.textContent='';t.className=''},6000)}
 async function run(btn,action,args){
   const label=btn?btn.textContent:null;
@@ -252,7 +251,7 @@ async function run(btn,action,args){
   if(btn){btn.disabled=false;btn.textContent=label}
   refresh(true);
 }
-// botoes destrutivos pedem um segundo clique (alert/confirm nao funcionam bem na NUI do FiveM)
+
 function confirmClick(btn,confirmKey,fn){
   let armed=false,t;
   btn.addEventListener('click',e=>{
