@@ -3,8 +3,6 @@ Config = {}
 Config.Language = 'pt-BR'
 
 Config.Permissions = {
-    -- Grupos/permissoes/jobs da sua base, resolvidos pelo framezero_bridge
-    -- (vRP: permissao; QBCore/Qbox: grupo; ESX: grupo; ACE/standalone: ver abaixo).
     bridge = { 'admin', 'Admin', 'admin.acess', 'superadmin', 'owner' },
     -- ACE nativo. No server.cfg: add_ace group.admin piercer_hitchhunter.use allow
     ace = { 'piercer_hitchhunter.use' },
