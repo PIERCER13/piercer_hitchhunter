@@ -1,4 +1,3 @@
--- Ponte server <-> NUI in-game. Toda acao revalida a permissao no servidor (via Auth/bridge).
 RegisterNetEvent('piercer_hitchhunter:open', function()
     local src = source
     if Auth.isAllowed(src) then
