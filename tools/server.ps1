@@ -66,7 +66,6 @@ function Test-ActionRequest($req) {
 }
 
 function Clean-Args($raw) {
-    # so passa campos conhecidos, com tamanho e formato limitados
     $a = @{}
     if ($null -eq $raw) { return $a }
     if ($raw.resource -is [string] -and $raw.resource -match '^[\w\-\.]{1,64}$') { $a.resource = $raw.resource }
