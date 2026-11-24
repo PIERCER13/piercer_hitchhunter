@@ -9,11 +9,9 @@ Config.Permissions = {
 }
 Config.IngameIncidentLimit = 60
 
--- Acoes remotas (painel web e NUI): fila em data/commands.json lida pelo resource.
 Config.Actions = {
     pollMs = 2000,
-    commandTtl = 60,          -- comandos mais velhos que isso (s) sao descartados
-    -- Permite "Reiniciar resource" nos suspeitos. DESLIGADO por padrao: derruba o resource de verdade.
+    commandTtl = 60,
     restartResource = false,
     -- Nunca podem ser reiniciados pelo painel (o proprio hitchhunter ja e protegido).
     protected = { 'framezero_bridge', 'oxmysql', 'monitor', 'sessionmanager', 'mapmanager', 'spawnmanager', 'chat' },
