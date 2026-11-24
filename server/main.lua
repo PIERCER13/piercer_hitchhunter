@@ -85,7 +85,6 @@ RegisterConsoleListener(function(channel, message)
         return
     end
 
-    -- oxmysql / mysql-async: "<resource> took 123.4ms to execute a query"
     local res, qms = line:match('([%w_%-%.]+) took ([%d%.]+)%s*ms')
     if res and line:lower():find('quer') then
         push(Hunter.slowQueries, {
@@ -101,9 +100,6 @@ AddEventHandler('onServerResourceStop', function(name)
     push(Hunter.resEvents, { t = os.time(), resource = name, action = 'stop' }, 100)
 end)
 
----------------------------------------------------------------------
--- Ranking de suspeitos (heuristico + profiler)
----------------------------------------------------------------------
 local function buildSuspects(now)
     local score, evidence = {}, {}
     local function add(resource, pts, text)
