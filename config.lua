@@ -16,8 +16,6 @@ Config.Actions = {
     protected = { 'framezero_bridge', 'oxmysql', 'monitor', 'sessionmanager', 'mapmanager', 'spawnmanager', 'chat' },
 }
 
--- Ao iniciar, se o encerramento anterior nao foi limpo (queda/crash), registra um incidente
--- "queda" com os suspeitos do ultimo estado gravado. Reinicios normais pelo txAdmin nao contam.
 Config.CrashDetection = true
 
 -- Hitches abaixo disso (ms) sao ignorados.
