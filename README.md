@@ -10,7 +10,7 @@ Catches every `network thread hitch warning` (and `server thread hitch warning`)
 ![Frameworks](https://img.shields.io/badge/vRP%20%C2%B7%20Creative%20%C2%B7%20ESX%20%C2%B7%20QBCore%20%C2%B7%20Qbox%20%C2%B7%20TNet%20%C2%B7%20standalone-2b2b2b?style=for-the-badge)
 ![Lua](https://img.shields.io/badge/Lua-5.4-2C2D72?style=for-the-badge&logo=lua&logoColor=white)
 ![UI](https://img.shields.io/badge/NUI-PT--BR%20%2F%20EN--US-black?style=for-the-badge)
-[![Discord](https://img.shields.io/badge/Discord-join-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/jZ3vTmdjU7)
+[![Discord](https://img.shields.io/badge/Discord-join-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/framezerodevelopment)
 
 [![Ler em Português](https://img.shields.io/badge/Ler%20em%20Portugu%C3%AAs-009B3A?style=for-the-badge&logo=googletranslate&logoColor=white)](README.pt-BR.md)
 
@@ -153,4 +153,4 @@ The `config.lua` file allows complete customization:
 
 ## 📋 Support
 
-Engineered to make hitch hunting on FiveM servers fast and evidence-based. Questions or suggestions? Join our Discord: https://discord.gg/jZ3vTmdjU7
+Engineered to make hitch hunting on FiveM servers fast and evidence-based. Questions or suggestions? Join our Discord: https://discord.gg/framezerodevelopment
